@@ -3,12 +3,15 @@ package com.i2kiselev.springCourseProject.controller;
 import com.i2kiselev.springCourseProject.model.AbstractProduct;
 import com.i2kiselev.springCourseProject.model.Roll;
 import com.i2kiselev.springCourseProject.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController
-@RequestMapping(path = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/products")
 @CrossOrigin(origins = "*")
 public class ProductController {
 
@@ -23,10 +26,12 @@ public class ProductController {
         return productService.findAllRolls();
     }
 
-    @GetMapping(path = "/getImage", produces = MediaType.IMAGE_JPEG_VALUE )
-    public @ResponseBody byte[] getProductImage(@RequestParam("id") Long productId){
-        AbstractProduct product = productService.findById(productId);
-        return product.getImage();
+    @RequestMapping(value = "/imageDisplay", method = RequestMethod.GET)
+    public void getImage(@RequestParam("id") Long itemId, HttpServletResponse response, HttpServletRequest request)
+            throws ServletException, IOException {
+        AbstractProduct product = productService.findById(itemId);
+        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        response.getOutputStream().write(product.getImage());
+        response.getOutputStream().close();
     }
-
 }

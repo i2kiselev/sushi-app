@@ -3,8 +3,6 @@ package com.i2kiselev.springCourseProject.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,6 +34,4 @@ public abstract class AbstractProduct implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
 
-    @Transient
-    private MultipartFile file;
 }
