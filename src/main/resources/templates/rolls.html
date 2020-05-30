@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Web app</title>
+    <title>Rollsets</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -25,7 +25,9 @@
         <div th:each="product : ${products}"  class="card">
             <img th:src="@{/products/getImage(id=${product.id})}" class="card-img-top" th:alt="${product.name}" alt="#" src="#">
             <div class="card-body">
-                <h5 class="card-title" th:text="${product.name}">Name</h5>
+                <a th:href="@{/home/roll(id=${product.id})}">
+                    <h5 class="card-title" th:text="${product.name}">Name</h5>
+                </a>
                 <p class="card-text" th:text="${product.price}">Price</p>
             </div>
         </div>

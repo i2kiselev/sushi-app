@@ -22,3 +22,131 @@ html, body {
 .error{
     color: red;
 }
+
+.error_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    margin-top: 20%;
+}
+
+#new_here{
+    margin-top: 1rem;
+}
+
+form[action="/console/addProduct"],
+form[action="/console/addRoll"],
+form[action="/console/addRollset"],
+form[action="/home/addRollset"]{
+    width: 100%;
+    position: fixed;
+    top: 20%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+form[action="/console/addProduct"] .form-group,
+form[action="/console/addRoll"] .form-group,
+form[action="/console/addRollset"] .form-group,
+form[action="/home/addRollset"] .form-group{
+    width: 25%;
+}
+
+form[action="/console/addRollset"] .form-group:last-child{
+    width: 50%;
+}
+
+form[action="/console/addProduct"] .btn-wrap,
+form[action="/console/addRoll"] .btn-wrap,
+form[action="/console/addRollset"] .btn-wrap,
+form[action="/home/addRollset"] .btn-wrap{
+    display: block;
+    width: 15%;
+}
+
+#cross{
+    background-image: url("../images/blue.png");
+    background-repeat : no-repeat;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+}
+
+#cross:hover{
+    background-image: url("../images/red.png");
+}
+
+.panel-default.well{
+    display: flex;
+    border: 1px none #C5C8CB;
+    border-bottom-style: solid;
+    height: 110px;
+    padding: 10px 0;
+}
+
+.col-md-9{
+    flex: none;
+    max-width: 55%;
+}
+
+.card-deck .card{
+    flex:none;
+    margin-bottom: 10px;
+    width: 20%;
+}
+
+.panel-heading{
+    width: 45%;
+}
+
+.row.panel-body .col-md-11{
+    flex: none;
+    max-width: 88%!important;
+}
+
+.row.panel-body{
+    margin-top: 1rem;
+}
+
+.orders-wrap{
+    width: 100%;
+}
+
+.pagination_list{
+    display: flex;
+    justify-content: center;
+}
+
+.pagination_list .pagination{
+    margin-right: 10px;
+}
+
+.table{
+    display: flex;
+    justify-content: center;
+}
+
+.content-wrapper .item-container .container .col-md-12{
+    max-width: 50%;
+}
+
+.container.pic{
+    display: flex;
+}
+
+.container.pic #item-display{
+    width: 500px;
+}
+
+.product-title{
+    color: #007bff;
+    font-weight: bold;
+    font-size: x-large;
+}

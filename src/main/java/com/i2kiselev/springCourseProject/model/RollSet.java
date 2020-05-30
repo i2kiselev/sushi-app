@@ -1,21 +1,21 @@
 package com.i2kiselev.springCourseProject.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("2")
-public class RollSet extends AbstractProduct implements Serializable {
+public class RollSet extends AbstractProduct implements Serializable, AttributesStrategy {
 
     @Column(name = "createdAt")
     private Date createdAt;
@@ -24,12 +24,32 @@ public class RollSet extends AbstractProduct implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(targetEntity = Roll.class)
-    @Size(min=10,message = "You must choose at least 20 rolls to create set")
+    @Override
+    public Integer getFinalCost() {
+        int total = 0;
+        for (Roll roll:this.getRolls()){
+            total+=roll.getFinalCost();
+        }
+        return total;
+    }
+
+    @Override
+    public Integer getFinalWeight() {
+        int total = 0;
+        for (Roll roll: this.getRolls()){
+            total+=roll.getFinalWeight();
+        }
+        return total;
+    }
+
+    @ManyToMany(targetEntity = Roll.class, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Roll> rolls;
 
     @PrePersist
     void setCreatedAt(){
         this.createdAt = new Date();
     }
+
+
 }

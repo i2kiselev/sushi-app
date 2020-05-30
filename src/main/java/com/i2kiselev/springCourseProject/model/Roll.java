@@ -1,22 +1,25 @@
 package com.i2kiselev.springCourseProject.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.Serializable;
 
-@Data
+@Setter
+@Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @DiscriminatorValue("1")
-public class Roll extends AbstractProduct implements Serializable {
-
+public class Roll extends AbstractProduct implements Serializable, AttributesStrategy {
     @Column(name = "composition")
     private String composition;
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

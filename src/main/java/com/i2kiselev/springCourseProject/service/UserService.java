@@ -3,6 +3,7 @@ package com.i2kiselev.springCourseProject.service;
 import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,12 @@ public class UserService implements UserDetailsService {
                 "User '" + username + "' not found");
     }
 
+    public User findByUsername(String username) { return userRepo.findByUsername(username);}
+
+    public User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepo.findByUsername(username);
+    }
     public Iterable<User> findAll() {
         return userRepo.findAll();
     }
@@ -42,4 +49,5 @@ public class UserService implements UserDetailsService {
     public void deleteUserById(Long id) {
         userRepo.deleteById(id);
     }
+
 }

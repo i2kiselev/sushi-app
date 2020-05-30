@@ -60,7 +60,6 @@ public class ShoppingCartService {
         return result;
     }
 
-
     public void checkout()  {
             Order order = getOrderBeforeCheckout();
             orderService.setTotal(order);

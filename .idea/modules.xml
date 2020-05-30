@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SushiApp.iml" filepath="$PROJECT_DIR$/.idea/SushiApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springCourseProject.iml" filepath="$PROJECT_DIR$/springCourseProject.iml" />
     </modules>
   </component>
 </project>
