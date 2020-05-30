@@ -49,7 +49,6 @@ public class User implements UserDetails, Serializable {
         this.phone = phone;
         this.email = email;
         roles.add(new Role("ROLE_USER"));
-        roles.add(new Role("ROLE_ADMIN"));
     }
 
     @Override

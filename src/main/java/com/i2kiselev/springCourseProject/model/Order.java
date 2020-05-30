@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Order")
+@Table(name = "product_order")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,21 +22,50 @@ public class Order implements Serializable {
     private Long id;
 
     @Column(name = "placeDate")
-    private Date placeDate;
+    private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-   @Enumerated(EnumType.STRING)
+    public enum Status{
+        ACCEPTED,
+        IN_KITCHEN,
+        DELIVERING,
+        FINISHED;
+        private static Status[] vals = values();
+        public Status next()
+        {
+            return vals[(this.ordinal()+1) % vals.length];
+        }
+    }
+
+    @Column(name = "cost")
+    private Long total;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "orders_products",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> items;
+    private List<AbstractProduct> items;
 
+    @PrePersist
+    void setCreatedAt(){
+        this.createdAt = new Date();
+    }
+
+    public Order(User user, Status status, List<AbstractProduct> items) {
+        this.user = user;
+        this.status = status;
+        this.items = items;
+    }
+
+    public void nextStatus(){
+        if(this.getStatus()!=Status.FINISHED) this.setStatus(getStatus().next());
+    }
 }

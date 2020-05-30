@@ -35,4 +35,7 @@ public abstract class AbstractProduct implements Serializable {
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
+
+    @Transient
+    private MultipartFile file;
 }

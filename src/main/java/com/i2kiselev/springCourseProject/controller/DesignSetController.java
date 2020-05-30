@@ -1,6 +1,5 @@
 package com.i2kiselev.springCourseProject.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.i2kiselev.springCourseProject.model.RollSet;
 import com.i2kiselev.springCourseProject.model.User;

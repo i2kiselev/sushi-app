@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+//Additional class for validating and acquiring User data
 @Data
 class RegistrationForm {
 

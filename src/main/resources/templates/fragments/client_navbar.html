@@ -3,18 +3,34 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarToggler">
-        <a class="navbar-brand align-center" href="#">
+        <a class="navbar-brand align-center" href="#"><img src="#" th:src="@{/images/logo.svg}" width="45" height="45" class="d-inline-block align-center" alt="">
             Sushi app</a>
-        <img src="#" th:src="@{/images/logo.svg}" width="45" height="45" class="d-inline-block align-center" alt="">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/home/rollsets}">Rollsets</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Rolls</a>
+                <a class="nav-link" th:href="@{/home/rolls}">Rolls</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="#">Sets</a>
+                <a class="nav-link " th:href="@{/home/products}">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/home/addRollset}">Design Rollset!</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/shoppingCart}" >Shopping Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/home/orders}" >Your orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/home/clientRollsets}" >Your rollsets!</a>
+            </li>
+            <li class="nav-item">
+                <form method="POST" th:action="@{/logout}">
+                    <button class="btn btn-primary" type="submit">Logout</button>
+                </form>
             </li>
         </ul>
     </div>

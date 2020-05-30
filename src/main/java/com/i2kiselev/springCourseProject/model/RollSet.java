@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("2")
-public class RollSet extends Product implements Serializable {
+public class RollSet extends AbstractProduct implements Serializable {
 
     @Column(name = "createdAt")
     private Date createdAt;

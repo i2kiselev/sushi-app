@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("1")
-public class Roll extends Product implements Serializable {
+public class Roll extends AbstractProduct implements Serializable {
 
     @Column(name = "composition")
     private String composition;
