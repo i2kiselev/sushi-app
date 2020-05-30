@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+//Controller for redirects to custom error pages
 public class CustomErrorController  implements ErrorController {
 
     @RequestMapping("/error")
