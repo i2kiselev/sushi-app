@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+//Controller for staff dashboard
 @RequestMapping("/console")
 @Controller
 public class AdminController {

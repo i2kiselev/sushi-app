@@ -34,10 +34,6 @@ public class UserService implements UserDetailsService {
 
     public User findByUsername(String username) { return userRepo.findByUsername(username);}
 
-    public User getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepo.findByUsername(username);
-    }
     public Iterable<User> findAll() {
         return userRepo.findAll();
     }
@@ -50,4 +46,8 @@ public class UserService implements UserDetailsService {
         userRepo.deleteById(id);
     }
 
+    User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepo.findByUsername(username);
+    }
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -29,15 +31,15 @@ public class ProductService {
         this.userService = userService;
     }
 
+    private Roll findRollById(Long id) {
+        Optional<Roll> roll = rollRepository.findById(id);
+        return roll.orElseThrow(NoSuchElementException::new);
+    }
+
     public AbstractProduct findById(Long id) {
-        return abstractProductRepository.findById(id).get();
+        Optional<AbstractProduct> abstractProduct = abstractProductRepository.findById(id);
+        return abstractProduct.orElseThrow(NoSuchElementException::new);
     }
-
-    public RollSet findRollsetById(Long id) {
-        return rollSetRepository.findById(id).get();
-    }
-
-    public Roll findRollById(Long id) { return rollRepository.findById(id).get();}
 
     public void saveProduct(Product product) { productRepository.save(product);    }
     public void saveRoll(Roll roll) {
@@ -93,4 +95,5 @@ public class ProductService {
         rollSet.setUser(userService.getCurrentUser());
         return rollSet;
     }
+
 }
