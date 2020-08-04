@@ -1,10 +1,9 @@
 package com.i2kiselev.springCourseProject.controller;
 
-import com.i2kiselev.springCourseProject.model.AbstractProduct;
-import com.i2kiselev.springCourseProject.model.Product;
-import com.i2kiselev.springCourseProject.model.Roll;
-import com.i2kiselev.springCourseProject.model.RollSet;
+import com.i2kiselev.springCourseProject.model.*;
+import com.i2kiselev.springCourseProject.service.OrderService;
 import com.i2kiselev.springCourseProject.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductRestController {
 
     private final ProductService productService;
+    private final OrderService orderService;
 
-    public ProductRestController(ProductService productService) {
+    @Autowired
+    public ProductRestController(ProductService productService, OrderService orderService) {
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/allRolls")
@@ -37,6 +39,11 @@ public class ProductRestController {
     public @ResponseBody byte[] getProductImage(@RequestParam("id") Long productId){
         AbstractProduct product = productService.findById(productId);
         return product.getImage();
+    }
+
+    @GetMapping("/orders")
+    public @ResponseBody Order getOrderById(@RequestParam("id") Long orderId){
+        return orderService.findById(orderId);
     }
 
 }

@@ -1,15 +1,23 @@
 package com.i2kiselev.springCourseProject.service;
 
+import com.i2kiselev.springCourseProject.exception.NoEntityException;
 import com.i2kiselev.springCourseProject.model.AbstractProduct;
 import com.i2kiselev.springCourseProject.model.AttributesStrategy;
 import com.i2kiselev.springCourseProject.model.Order;
+import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+
+@Slf4j
 @Service
 public class OrderService {
 
@@ -21,28 +29,41 @@ public class OrderService {
         this.userService = userService;
     }
 
-    public void saveOrder(Order order){
-        orderRepository.save(order);
+    public Order findById(Long id) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()) {
+            log.info("Returned order with id "+id);
+            return optionalOrder.get();
+        }
+        log.info("Order with id "+id+"not found");
+        throw new NoEntityException("Order with id "+id+" not found");
     }
-    public Order findById(Long id){
-        return orderRepository.findById(id).get();
-    }
+
     public Page<Order> getUnfinishedOrders(Pageable pageable){
+        log.info("Returned paged unfinished orders");
         return orderRepository.findAllByStatusIsNot(Order.Status.FINISHED, pageable);
     }
     public Page<Order> getOrdersForCurrentUser(Pageable pageable){
-        return orderRepository.findAllByUser(userService.getCurrentUser(), pageable);
+        User currentUser = userService.getCurrentUser();
+        log.info("Returned list of orders for user "+currentUser.getUsername());
+        return orderRepository.findAllByUser(currentUser, pageable);
     }
     public void nextStatus(Long orderId){
         Order order =  findById(orderId);
         order.nextStatus();
+        log.info("Status changed for order №"+order.getId());
         saveOrder(order);
     }
-    public void setTotal(Order order){
+    void setTotal(Order order){
         long total =0L;
         for (AttributesStrategy product : order.getItems()){
             total+=product.getFinalCost();
         }
         order.setTotal(total);
+        log.info("Calculated total cost for order №"+order.getId());
+    }
+    void saveOrder(Order order){
+        log.debug("Saved order №"+order.getId());
+        orderRepository.save(order);
     }
 }

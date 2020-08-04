@@ -9,8 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractProduct implements Serializable,AttributesStrategy {
@@ -71,4 +70,5 @@ public abstract class AbstractProduct implements Serializable,AttributesStrategy
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

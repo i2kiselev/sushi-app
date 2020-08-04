@@ -2,6 +2,7 @@ package com.i2kiselev.springCourseProject.service;
 
 import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
 
@@ -32,22 +34,9 @@ public class UserService implements UserDetailsService {
                 "User '" + username + "' not found");
     }
 
-    public User findByUsername(String username) { return userRepo.findByUsername(username);}
-
-    public Iterable<User> findAll() {
-        return userRepo.findAll();
-    }
-
-    public Optional<User> findById(Long id) {
-        return userRepo.findById(id);
-    }
-
-    public void deleteUserById(Long id) {
-        userRepo.deleteById(id);
-    }
-
     User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Returned current app user: "+username);
         return userRepo.findByUsername(username);
     }
 }

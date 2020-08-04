@@ -2,6 +2,7 @@ package com.i2kiselev.springCourseProject.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class User implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,6 +50,11 @@ public class User implements UserDetails, Serializable {
         this.phone = phone;
         this.email = email;
         roles.add(new Role("ROLE_USER"));
+    }
+
+    public User(Long id, String username) {
+        this.id = id;
+        this.username = username;
     }
 
     @Override

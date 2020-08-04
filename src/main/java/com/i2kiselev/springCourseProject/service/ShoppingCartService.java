@@ -2,6 +2,8 @@ package com.i2kiselev.springCourseProject.service;
 
 import com.i2kiselev.springCourseProject.model.AbstractProduct;
 import com.i2kiselev.springCourseProject.model.Order;
+import com.i2kiselev.springCourseProject.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -10,6 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ShoppingCartService {
@@ -32,6 +35,7 @@ public class ShoppingCartService {
         } else {
             products.put(product, 1);
         }
+        log.info("Product "+product.getName()+" was added to cart");
     }
 
 
@@ -43,10 +47,12 @@ public class ShoppingCartService {
                 products.remove(product);
             }
         }
+        log.info("Product "+product.getName()+" was removed from cart");
     }
 
 
     public Map<AbstractProduct, Integer> getProductsInCart() {
+        log.info("Returned map of current cart contents");
         return Collections.unmodifiableMap(products);
     }
 
@@ -57,15 +63,16 @@ public class ShoppingCartService {
                 result.add(entry.getKey());
             }
         }
+        log.info("Returned list of products from map");
         return result;
     }
-
 
     public void checkout()  {
             Order order = getOrderBeforeCheckout();
             orderService.setTotal(order);
             orderService.saveOrder(order);
             products.clear();
+            log.info("Checkout performed on order №"+ order.getId());
     }
 
     public Boolean isProductsEmpty(){
@@ -81,6 +88,7 @@ public class ShoppingCartService {
     }
 
     private Order getOrderBeforeCheckout(){
-        return new Order(userService.getCurrentUser(), Order.Status.ACCEPTED,getListOfProducts());
+        log.info("Returned order prepared for checkout");
+        return new Order(userService.getCurrentUser(), Order.Status.ACCEPTED, getListOfProducts());
     }
 }

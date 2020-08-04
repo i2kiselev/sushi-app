@@ -1,10 +1,12 @@
 package com.i2kiselev.springCourseProject.service;
 
+import com.i2kiselev.springCourseProject.exception.NoEntityException;
 import com.i2kiselev.springCourseProject.model.*;
 import com.i2kiselev.springCourseProject.repository.AbstractProductRepository;
 import com.i2kiselev.springCourseProject.repository.ProductRepository;
 import com.i2kiselev.springCourseProject.repository.RollRepository;
 import com.i2kiselev.springCourseProject.repository.RollSetRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProductService {
 
@@ -32,49 +35,76 @@ public class ProductService {
     }
 
     private Roll findRollById(Long id) {
-        Optional<Roll> roll = rollRepository.findById(id);
-        return roll.orElseThrow(NoSuchElementException::new);
+        Optional<Roll> optionalRoll = rollRepository.findById(id);
+        if (optionalRoll.isPresent()) {
+            log.info("Returned roll with id "+id);
+            return optionalRoll.get();
+        }
+        log.info("Roll with id "+id+"not found");
+        throw new NoEntityException("Roll with id "+id+" not found");
     }
 
-    public AbstractProduct findById(Long id) {
-        Optional<AbstractProduct> abstractProduct = abstractProductRepository.findById(id);
-        return abstractProduct.orElseThrow(NoSuchElementException::new);
+    public AbstractProduct findById(Long id){
+        Optional<AbstractProduct> optionalAbstractProduct = abstractProductRepository.findById(id);
+        if (optionalAbstractProduct.isPresent()) {
+            log.info("Returned product with id "+id);
+            return optionalAbstractProduct.get();
+        }
+        log.info("Product with id "+id+"not found");
+        throw new NoEntityException("Product with id "+id+" not found");
     }
 
-    public void saveProduct(Product product) { productRepository.save(product);    }
+    public void saveProduct(Product product) {
+        logProductSave(product);
+        productRepository.save(product);    }
+
     public void saveRoll(Roll roll) {
+        logProductSave(roll);
         rollRepository.save(roll);
     }
 
     public void saveRollSet(RollSet rollSet) {
+        logProductSave(rollSet);
         rollSetRepository.save(rollSet);
     }
 
     public Iterable<AbstractProduct> findAll() {
+        logFindProducts(AbstractProduct.class);
         return abstractProductRepository.findAll();
     }
 
     public Iterable<Product> findAllProducts() {
+        logFindProducts(Product.class);
         return productRepository.findAll();
     }
 
     public Iterable<Roll> findAllRolls() {
+        logFindProducts(Roll.class);
         return rollRepository.findAll();
     }
 
     public Iterable<RollSet> findAllRollSets() {
+        logFindProducts(RollSet.class);
         return rollSetRepository.findAll();
     }
 
-    public Iterable<RollSet> findAllRollSetsByStaff(){ return rollSetRepository.findAllByStaff();}
+    public Iterable<RollSet> findAllRollSetsByStaff(){
+        log.info("Returned all roll sets created by staff");
+        return rollSetRepository.findAllByStaff();
+    }
 
-    public Iterable<RollSet> findAllRollsetsByCurrentUser() { return rollSetRepository.findAllByUser(userService.getCurrentUser());}
+    public Iterable<RollSet> findAllRollsetsByCurrentUser() {
+        User currentUser = userService.getCurrentUser();
+        log.info("Returned all roll sets created by user "+ currentUser.getUsername());
+        return rollSetRepository.findAllByUser(currentUser);
+    }
 
     public void saveImage(AbstractProduct product) {
         try {
             product.setImage(product.getFile().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+            log.warn("Image of product "+ product.getName()+"was not set");
         }
     }
 
@@ -93,7 +123,15 @@ public class ProductService {
         rollSet.setRolls(finalArray);
         rollSet.setWeight(rollSet.getFinalWeight());
         rollSet.setUser(userService.getCurrentUser());
+        log.info("Returned roll set created from form");
         return rollSet;
     }
 
+    private void logProductSave(AbstractProduct product){
+        log.info("Product "+product.getName()+" was saved");
+    }
+
+    private void logFindProducts(Class cl){
+        log.info("Returned product collection of type "+ cl.getSimpleName());
+    }
 }

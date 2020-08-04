@@ -4,6 +4,7 @@ import com.i2kiselev.springCourseProject.model.*;
 import com.i2kiselev.springCourseProject.service.OrderService;
 import com.i2kiselev.springCourseProject.service.ProductService;
 import com.i2kiselev.springCourseProject.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -16,18 +17,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 //Controller for staff dashboard
+@Slf4j
 @RequestMapping("/console")
 @Controller
 public class AdminController {
 
     private final ProductService productService;
     private final OrderService orderService;
-    private final UserService userService;
 
     public AdminController(ProductService productService, OrderService orderService, UserService userService) {
         this.productService = productService;
         this.orderService = orderService;
-        this.userService = userService;
     }
 
     @GetMapping("/nextStatus")
@@ -49,6 +49,7 @@ public class AdminController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        log.info("Returned staff's orders page to client");
         return "service-orders";
     }
 
@@ -65,6 +66,7 @@ public class AdminController {
     @GetMapping("/addProduct")
     public String addProduct(Model model){
         model.addAttribute("product", new Product());
+        log.info("Returned staff's new product page to client");
         return "add-product";
     }
 
@@ -78,6 +80,7 @@ public class AdminController {
     @GetMapping("/addRoll")
     public String addRoll(Model model){
         model.addAttribute("roll", new Roll());
+        log.info("Returned staff's new roll page to client");
         return "add-roll";
     }
 
@@ -85,6 +88,7 @@ public class AdminController {
     public String saveProduct(@ModelAttribute("roll") Roll roll) {
         productService.saveImage(roll);
         productService.saveRoll(roll);
+        log.info("Returned staff's new product page to client");
         return "add-roll";
     }
 
@@ -92,6 +96,7 @@ public class AdminController {
     public String saveRollset(Model model){
         model.addAttribute("rollsetForm", new RollSetForm());
         model.addAttribute("rolls", productService.findAllRolls());
+        log.info("Returned staff's new rollset page to client");
         return "add-rollset";
     }
 
@@ -106,7 +111,7 @@ public class AdminController {
     }
 
     @GetMapping("/order")
-    public String getProduct(@RequestParam("id") Order order, Model model){
+    public String getOrder(@RequestParam("id") Order order, Model model){
         model.addAttribute("order", order);
         return "order";
     }

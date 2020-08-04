@@ -1,5 +1,6 @@
 package com.i2kiselev.springCourseProject.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
@@ -18,9 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    private Log logger = LogFactory.getLog(this.getClass());
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -41,7 +41,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
-            logger.debug(
+            log.debug(
                     "Response has already been committed. Unable to redirect to "
                             + targetUrl);
             return;
