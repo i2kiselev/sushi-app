@@ -54,6 +54,7 @@ public class OrderService {
         log.info("Status changed for order №"+order.getId());
         saveOrder(order);
     }
+
     void setTotal(Order order){
         long total =0L;
         for (AttributesStrategy product : order.getItems()){
@@ -62,6 +63,7 @@ public class OrderService {
         order.setTotal(total);
         log.info("Calculated total cost for order №"+order.getId());
     }
+
     void saveOrder(Order order){
         log.debug("Saved order №"+order.getId());
         orderRepository.save(order);

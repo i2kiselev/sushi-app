@@ -52,8 +52,7 @@ public class User implements UserDetails, Serializable {
         roles.add(new Role("ROLE_USER"));
     }
 
-    public User(Long id, String username) {
-        this.id = id;
+    public User(String username) {
         this.username = username;
     }
 

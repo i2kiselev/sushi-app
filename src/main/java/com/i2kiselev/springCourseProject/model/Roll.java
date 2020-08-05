@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Setter
 @Getter
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Entity
 @DiscriminatorValue("1")
 public class Roll extends AbstractProduct implements Serializable, AttributesStrategy {
@@ -22,4 +21,5 @@ public class Roll extends AbstractProduct implements Serializable, AttributesStr
     public String toString() {
         return super.toString();
     }
+
 }

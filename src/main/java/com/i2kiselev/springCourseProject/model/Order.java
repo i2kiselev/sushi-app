@@ -2,6 +2,7 @@ package com.i2kiselev.springCourseProject.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -63,6 +64,22 @@ public class Order implements Serializable {
         this.user = user;
         this.status = status;
         this.items = items;
+    }
+    public Order(Long id){
+        this.id=id;
+    }
+
+    public Order(Status status) {
+        this.status = status;
+    }
+
+    public Order(Status status, User user) {
+        this.status = status;
+        this.user = user;
+
+    }
+    public Order(Long id, User user) {
+        this.user = user;
     }
 
     public void nextStatus(){

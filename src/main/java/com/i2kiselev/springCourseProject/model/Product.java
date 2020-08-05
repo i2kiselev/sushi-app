@@ -10,6 +10,4 @@ import javax.persistence.Entity;
 @DiscriminatorValue("0")
 @RequiredArgsConstructor
 public class Product extends AbstractProduct implements AttributesStrategy {
-
-
 }

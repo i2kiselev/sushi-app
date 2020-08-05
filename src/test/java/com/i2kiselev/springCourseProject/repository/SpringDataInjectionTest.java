@@ -63,4 +63,5 @@ class SpringDataInjectionTest {
     void rollSetRepoIsNotNull(){
         assertThat(rollSetRepository).isNotNull();
     }
+
 }
