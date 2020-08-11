@@ -1,5 +1,6 @@
 package com.i2kiselev.springCourseProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,12 +33,14 @@ public abstract class AbstractProduct implements Serializable,AttributesStrategy
     @Column(name ="image")
     @Lob
     @Basic(fetch = FetchType.LAZY)
+    @JsonIgnore
     private byte[] image;
 
     @Column(name ="description")
     private String description;
 
     @Transient
+    @JsonIgnore
     private MultipartFile file;
 
     @Override
@@ -47,12 +50,13 @@ public abstract class AbstractProduct implements Serializable,AttributesStrategy
                 ", weight=" + weight +
                 '}';
     }
-
+    @JsonIgnore
     @Override
     public Integer getFinalCost() {
         return price;
     }
 
+    @JsonIgnore
     @Override
     public Integer getFinalWeight() {
         return weight;

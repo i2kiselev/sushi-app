@@ -28,7 +28,7 @@ class UserRepositoryTest {
     }
 
     @Test
-        void findByUsername(){
+    void findByUsername(){
         userRepository.save(new User("admin"));
         User user = userRepository.findByUsername("admin");
         assertThat(user.getUsername()).isEqualTo("admin");

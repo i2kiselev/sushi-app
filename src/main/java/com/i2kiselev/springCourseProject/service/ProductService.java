@@ -47,7 +47,7 @@ public class ProductService {
     public AbstractProduct findById(Long id){
         Optional<AbstractProduct> optionalAbstractProduct = abstractProductRepository.findById(id);
         if (optionalAbstractProduct.isPresent()) {
-            log.info("Returned product with id "+id);
+            log.debug("Returned product with id "+id);
             return optionalAbstractProduct.get();
         }
         log.info("Product with id "+id+"not found");

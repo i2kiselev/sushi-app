@@ -6,12 +6,14 @@ import com.i2kiselev.springCourseProject.model.AttributesStrategy;
 import com.i2kiselev.springCourseProject.model.Order;
 import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.OrderRepository;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,8 +23,8 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    private final OrderRepository orderRepository;
-    private final UserService userService;
+    private OrderRepository orderRepository;
+    private UserService userService;
 
     public OrderService(OrderRepository orderRepository, UserService userService) {
         this.orderRepository = orderRepository;
@@ -37,6 +39,7 @@ public class OrderService {
         }
         log.info("Order with id "+id+"not found");
         throw new NoEntityException("Order with id "+id+" not found");
+
     }
 
     public Page<Order> getUnfinishedOrders(Pageable pageable){
@@ -47,9 +50,11 @@ public class OrderService {
         User currentUser = userService.getCurrentUser();
         log.info("Returned list of orders for user "+currentUser.getUsername());
         return orderRepository.findAllByUser(currentUser, pageable);
+
     }
+
     public void nextStatus(Long orderId){
-        Order order =  findById(orderId);
+        Order order =  this.findById(orderId);
         order.nextStatus();
         log.info("Status changed for order №"+order.getId());
         saveOrder(order);
