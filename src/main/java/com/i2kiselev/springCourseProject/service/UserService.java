@@ -28,15 +28,26 @@ public class UserService implements UserDetailsService {
             throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
         if (user != null) {
+            log.info("Returned user: "+username);
             return user;
         }
+        log.warn("User '" + username + "' not found");
         throw new UsernameNotFoundException(
                 "User '" + username + "' not found");
     }
+    String getCurrentUsername(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 
     User getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("Returned current app user: "+username);
-        return userRepo.findByUsername(username);
+        String username = getCurrentUsername();
+        User user = userRepo.findByUsername(username);
+        if (user != null) {
+            log.info("Returned current app user: "+username);
+            return user;
+        }
+        log.warn("User '" + username + "' not found");
+        throw new UsernameNotFoundException(
+                "User '" + username + "' not found");
     }
 }
