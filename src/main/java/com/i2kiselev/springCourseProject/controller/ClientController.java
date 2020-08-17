@@ -105,7 +105,7 @@ public class ClientController {
 
     @PostMapping("/addRollset")
     public String saveRollSet(@ModelAttribute("rollset") RollSetForm rollSetForm, Model model) {
-        RollSet rollset = productService.getRollSet(rollSetForm);
+        RollSet rollset = productService.getRollSetFromInputForm(rollSetForm);
         rollset.setPrice(rollset.getFinalCost());
         productService.saveRollSet(rollset);
         model.addAttribute("rollsetForm", new RollSetForm());
@@ -115,7 +115,7 @@ public class ClientController {
 
     @GetMapping("/clientRollsets")
     public String getClientRollsets(Model model){
-        model.addAttribute("products", productService.findAllRollsetsByCurrentUser());
+        model.addAttribute("products", productService.findAllRollSetsByCurrentUser());
         return  "client-rollsets";
     }
 }

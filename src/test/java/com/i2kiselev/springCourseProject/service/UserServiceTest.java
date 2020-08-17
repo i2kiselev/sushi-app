@@ -1,16 +1,12 @@
 package com.i2kiselev.springCourseProject.service;
 
 import com.i2kiselev.springCourseProject.model.User;
-import com.i2kiselev.springCourseProject.repository.OrderRepository;
 import com.i2kiselev.springCourseProject.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,11 +17,9 @@ import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(SpringExtension.class)
 class UserServiceTest {
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
-    private Authentication authentication;
+    private UserRepository userRepository;
 
     @InjectMocks
     @Spy

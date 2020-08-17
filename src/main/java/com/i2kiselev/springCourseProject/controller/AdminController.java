@@ -102,7 +102,7 @@ public class AdminController {
 
     @PostMapping("/addRollset")
     public String saveRollSet(@ModelAttribute("rollset") RollSetForm rollSetForm, Model model) {
-        RollSet rollset = productService.getRollSet(rollSetForm);
+        RollSet rollset = productService.getRollSetFromInputForm(rollSetForm);
         productService.saveImage(rollset);
         productService.saveRollSet(rollset);
         model.addAttribute("rollsetForm", new RollSetForm());

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -68,12 +67,12 @@ public class ProductService {
         rollSetRepository.save(rollSet);
     }
 
-    public Iterable<AbstractProduct> findAll() {
+    Iterable<AbstractProduct> findAll() {
         logFindProducts(AbstractProduct.class);
         return abstractProductRepository.findAll();
     }
 
-    public Iterable<Product> findAllProducts() {
+public Iterable<Product> findAllProducts() {
         logFindProducts(Product.class);
         return productRepository.findAll();
     }
@@ -93,7 +92,7 @@ public class ProductService {
         return rollSetRepository.findAllByStaff();
     }
 
-    public Iterable<RollSet> findAllRollsetsByCurrentUser() {
+    public Iterable<RollSet> findAllRollSetsByCurrentUser() {
         User currentUser = userService.getCurrentUser();
         log.info("Returned all roll sets created by user "+ currentUser.getUsername());
         return rollSetRepository.findAllByUser(currentUser);
@@ -108,7 +107,7 @@ public class ProductService {
         }
     }
 
-    public RollSet getRollSet(RollSetForm form) {
+    public RollSet getRollSetFromInputForm(RollSetForm form) {
         RollSet rollSet = new RollSet();
         rollSet.setName(form.getName());
         rollSet.setPrice(form.getPrice());
