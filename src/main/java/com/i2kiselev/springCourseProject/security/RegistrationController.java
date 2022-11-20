@@ -3,8 +3,6 @@ package com.i2kiselev.springCourseProject.security;
 import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +18,9 @@ import javax.validation.Valid;
 @Slf4j
 @RequestMapping("/register")
 public class RegistrationController {
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     public RegistrationController(
             UserRepository userRepo, PasswordEncoder passwordEncoder) {

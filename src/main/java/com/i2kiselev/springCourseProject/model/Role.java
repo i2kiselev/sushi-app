@@ -25,4 +25,7 @@ public class Role implements GrantedAuthority, Serializable {
         return role;
     }
 
+    public void setAuthority(String role) {
+        this.role = role;
+    }
 }

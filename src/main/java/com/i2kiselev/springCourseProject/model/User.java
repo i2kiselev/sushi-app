@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 @RequiredArgsConstructor
 public class User implements UserDetails, Serializable {
@@ -36,7 +36,7 @@ public class User implements UserDetails, Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = " email")
+    @Column(name = "email")
     private String email;
 
     @ElementCollection(fetch = FetchType.EAGER)

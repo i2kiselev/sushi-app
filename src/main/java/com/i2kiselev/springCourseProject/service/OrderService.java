@@ -1,31 +1,26 @@
 package com.i2kiselev.springCourseProject.service;
 
 import com.i2kiselev.springCourseProject.exception.NoEntityException;
-import com.i2kiselev.springCourseProject.model.AbstractProduct;
 import com.i2kiselev.springCourseProject.model.AttributesStrategy;
 import com.i2kiselev.springCourseProject.model.Order;
 import com.i2kiselev.springCourseProject.model.User;
 import com.i2kiselev.springCourseProject.repository.OrderRepository;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class OrderService {
 
-    private OrderRepository orderRepository;
-    private UserService userService;
+    private final OrderRepository orderRepository;
+    private final UserService userService;
 
+    @Autowired
     public OrderService(OrderRepository orderRepository, UserService userService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
@@ -46,6 +41,7 @@ public class OrderService {
         log.info("Returned paged unfinished orders");
         return orderRepository.findAllByStatusIsNot(Order.Status.FINISHED, pageable);
     }
+
     public Page<Order> getOrdersForCurrentUser(Pageable pageable){
         User currentUser = userService.getCurrentUser();
         log.info("Returned list of orders for user "+currentUser.getUsername());
