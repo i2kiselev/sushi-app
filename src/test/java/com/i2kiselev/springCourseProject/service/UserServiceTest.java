@@ -25,23 +25,21 @@ class UserServiceTest {
     @Spy
     private UserService userService;
 
-
-
     @Test
-    void loadUserByUsernameWhenUserIsPresent(){
+    void loadUserByUsername_positive() {
         User user = new User();
         given(userRepository.findByUsername("user")).willReturn(user);
         assertThat(userService.loadUserByUsername("user")).isEqualTo(user);
     }
 
     @Test
-    void loadUserByUsernameWhenUserIsNotPresent(){
+    void loadUserByUsername_noUser() {
         given(userRepository.findByUsername("user")).willReturn(null);
-        assertThrows(UsernameNotFoundException.class, ()->userService.loadUserByUsername("user"));
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("user"));
     }
 
     @Test
-    void getCurrentUserWhenUserIsPresent(){
+    void getCurrentUser_positive() {
         User user = new User();
         doReturn("user").when(userService).getCurrentUsername();
         given(userRepository.findByUsername("user")).willReturn(user);
@@ -49,12 +47,9 @@ class UserServiceTest {
     }
 
     @Test
-    void getCurrentUserWhenUserIsNotPresent(){
+    void getCurrentUser_noUser() {
         doReturn("user").when(userService).getCurrentUsername();
         given(userRepository.findByUsername("user")).willReturn(null);
-        assertThrows(UsernameNotFoundException.class, ()->userService.getCurrentUser());
+        assertThrows(UsernameNotFoundException.class, () -> userService.getCurrentUser());
     }
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.i2kiselev.springCourseProject.repository;
 
-import com.i2kiselev.springCourseProject.model.Roll;
 import com.i2kiselev.springCourseProject.model.RollSet;
 import com.i2kiselev.springCourseProject.model.User;
 import org.springframework.data.jpa.repository.Query;

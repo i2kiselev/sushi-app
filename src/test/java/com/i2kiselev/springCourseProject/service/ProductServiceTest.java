@@ -21,21 +21,22 @@ import static org.mockito.BDDMockito.given;
 class ProductServiceTest {
 
     @Mock
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
     @Mock
-    private  RollRepository rollRepository;
+    private RollRepository rollRepository;
     @Mock
-    private  RollSetRepository rollSetRepository;
+    private RollSetRepository rollSetRepository;
     @Mock
-    private  AbstractProductRepository abstractProductRepository;
+    private AbstractProductRepository abstractProductRepository;
     @Mock
-    private  UserService userService;
+    private UserService userService;
 
     @InjectMocks
     private ProductService productService;
 
     @Test
-    void findAll(){
+    void findAll() {
+        //setup
         List<AbstractProduct> productList = new ArrayList<>();
         Product product = new Product();
         product.setId(1L);
@@ -44,12 +45,16 @@ class ProductServiceTest {
         productList.add(product);
         productList.add(roll);
         given(abstractProductRepository.findAll()).willReturn(productList);
-        assertThat(productService.findAll()).contains(product);
-        assertThat(productService.findAll()).contains(roll);
+        //act
+        Iterable<AbstractProduct> result = productService.findAll();
+        //verify
+        assertThat(result).contains(product);
+        assertThat(result).contains(roll);
     }
 
     @Test
-    void findAllProducts(){
+    void findAllProducts() {
+        //setup
         List<Product> productList = new ArrayList<>();
         Product product = new Product();
         product.setId(1L);
@@ -58,12 +63,16 @@ class ProductServiceTest {
         productList.add(product);
         productList.add(product2);
         given(productRepository.findAll()).willReturn(productList);
-        assertThat(productService.findAllProducts()).contains(product);
-        assertThat(productService.findAllProducts()).contains(product2);
+        //act
+        Iterable<Product> result = productService.findAllProducts();
+        //verify
+        assertThat(result).contains(product);
+        assertThat(result).contains(product2);
     }
 
     @Test
-    void findAllRolls(){
+    void findAllRolls() {
+        //setup
         List<Roll> productList = new ArrayList<>();
         Roll roll = new Roll();
         roll.setId(1L);
@@ -72,12 +81,16 @@ class ProductServiceTest {
         productList.add(roll);
         productList.add(roll2);
         given(rollRepository.findAll()).willReturn(productList);
-        assertThat(productService.findAllRolls()).contains(roll2);
-        assertThat(productService.findAllRolls()).contains(roll);
+        //act
+        Iterable<Roll> result = productService.findAllRolls();
+        //verify
+        assertThat(result).contains(roll2);
+        assertThat(result).contains(roll);
     }
 
     @Test
-    void findAllRollSets(){
+    void findAllRollSets() {
+        //setup
         List<RollSet> rollSets = new ArrayList<>();
         RollSet rollSet = new RollSet();
         rollSet.setId(1L);
@@ -86,12 +99,16 @@ class ProductServiceTest {
         rollSets.add(rollSet);
         rollSets.add(rollSet1);
         given(rollSetRepository.findAll()).willReturn(rollSets);
-        assertThat(productService.findAllRollSets()).contains(rollSet1);
-        assertThat(productService.findAllRollSets()).contains(rollSet);
+        //act
+        Iterable<RollSet> result = productService.findAllRollSets();
+        //verify
+        assertThat(result).contains(rollSet1);
+        assertThat(result).contains(rollSet);
     }
 
     @Test
-    void findAllRollSetsByStaff(){
+    void findAllRollSetsByStaff() {
+        //setup
         List<RollSet> rollSets = new ArrayList<>();
         RollSet rollSet = new RollSet();
         rollSet.setId(1L);
@@ -101,12 +118,16 @@ class ProductServiceTest {
         rollSets.add(rollSet1);
         User user = new User();
         given(rollSetRepository.findAllByStaff()).willReturn(rollSets);
-        assertThat(productService.findAllRollSetsByStaff()).contains(rollSet1);
-        assertThat(productService.findAllRollSetsByStaff()).contains(rollSet);
+        //act
+        Iterable<RollSet> result = productService.findAllRollSetsByStaff();
+        //verify
+        assertThat(result).contains(rollSet1);
+        assertThat(result).contains(rollSet);
     }
 
     @Test
-    void findAllRollSetsByCurrentUser(){
+    void findAllRollSetsByCurrentUser() {
+        //setup
         List<RollSet> rollSets = new ArrayList<>();
         RollSet rollSet = new RollSet();
         rollSet.setId(1L);
@@ -117,8 +138,11 @@ class ProductServiceTest {
         User user = new User();
         given(userService.getCurrentUser()).willReturn(user);
         given(rollSetRepository.findAllByStaff()).willReturn(rollSets);
-        assertThat(productService.findAllRollSetsByStaff()).contains(rollSet1);
-        assertThat(productService.findAllRollSetsByStaff()).contains(rollSet);
+        //act
+        Iterable<RollSet> result = productService.findAllRollSetsByStaff();
+        //verify
+        assertThat(result).contains(rollSet1);
+        assertThat(result).contains(rollSet);
     }
 
 }
