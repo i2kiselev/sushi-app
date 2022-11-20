@@ -21,10 +21,10 @@ public class ShoppingCartService {
 
     private final OrderService orderService;
 
-    private Map<AbstractProduct, Integer> products = new HashMap<>();
+    private final Map<AbstractProduct, Integer> products = new HashMap<>();
 
     @Autowired
-    public ShoppingCartService( OrderService orderService, UserService userService) {
+    public ShoppingCartService(OrderService orderService, UserService userService) {
         this.orderService = orderService;
         this.userService = userService;
     }
@@ -35,7 +35,7 @@ public class ShoppingCartService {
         } else {
             products.put(product, 1);
         }
-        log.info("Product "+product.getName()+" was added to cart");
+        log.info("Product " + product.getName() + " was added to cart");
     }
 
 
@@ -47,7 +47,7 @@ public class ShoppingCartService {
                 products.remove(product);
             }
         }
-        log.info("Product "+product.getName()+" was removed from cart");
+        log.info("Product " + product.getName() + " was removed from cart");
     }
 
 
@@ -56,9 +56,9 @@ public class ShoppingCartService {
         return Collections.unmodifiableMap(products);
     }
 
-    private List<AbstractProduct> getListOfProducts(){
+    private List<AbstractProduct> getListOfProducts() {
         List<AbstractProduct> result = new ArrayList<>();
-        for (Map.Entry<AbstractProduct,Integer> entry: getProductsInCart().entrySet()) {
+        for (Map.Entry<AbstractProduct, Integer> entry : getProductsInCart().entrySet()) {
             for (int i = 0; i < entry.getValue(); i++) {
                 result.add(entry.getKey());
             }
@@ -67,27 +67,27 @@ public class ShoppingCartService {
         return result;
     }
 
-    public void checkout()  {
-            Order order = getOrderBeforeCheckout();
-            orderService.setTotal(order);
-            orderService.saveOrder(order);
-            products.clear();
-            log.info("Checkout performed on order №"+ order.getId());
+    public void checkout() {
+        Order order = getOrderBeforeCheckout();
+        orderService.setTotal(order);
+        orderService.saveOrder(order);
+        products.clear();
+        log.info("Checkout performed on order №" + order.getId());
     }
 
-    public Boolean isProductsEmpty(){
+    public Boolean isProductsEmpty() {
         return products.isEmpty();
     }
 
     public Long getTotal() {
         long total = 0L;
-        for (Map.Entry<AbstractProduct,Integer> entry: products.entrySet()) {
-                total+=entry.getKey().getPrice()*entry.getValue();
+        for (Map.Entry<AbstractProduct, Integer> entry : products.entrySet()) {
+            total += (long) entry.getKey().getPrice() * entry.getValue();
         }
         return total;
     }
 
-    private Order getOrderBeforeCheckout(){
+    private Order getOrderBeforeCheckout() {
         log.info("Returned order prepared for checkout");
         return new Order(userService.getCurrentUser(), Order.Status.ACCEPTED, getListOfProducts());
     }
