@@ -1,8 +1,6 @@
 package com.i2kiselev.springCourseProject.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -16,13 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_CLIENT = "ROLE_USER";
+
+    static final String ADMIN_HOME_URL = "/console/orders";
+    static final String CLIENT_HOME_URL = "/home";
+
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -32,35 +37,27 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
-    private void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication
-    ) throws IOException {
-
-        String targetUrl = determineTargetUrl(authentication);
-
+    private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        String targetUrl = getTargetURL(authentication);
         if (response.isCommitted()) {
-            log.debug(
-                    "Response has already been committed. Unable to redirect to "
-                            + targetUrl);
+            log.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
-
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-    private String determineTargetUrl(final Authentication authentication) {
-        ArrayList<String> authorityNames = new ArrayList<>();
+    static String getTargetURL(final Authentication authentication) {
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        for (final GrantedAuthority grantedAuthority : authorities) {
-            authorityNames.add(grantedAuthority.getAuthority());
-            }
-        if(authorityNames.contains("ROLE_ADMIN"))
-            return "/console/orders";
-        else if(authorityNames.contains("ROLE_USER"))
-            return "/home";
-        throw new IllegalStateException();
+        List<String> authorityNames = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        boolean isAdmin = authorityNames.stream().anyMatch(x -> x.equals(ROLE_ADMIN));
+        if (isAdmin) {
+            return ADMIN_HOME_URL;
+        }
+        boolean isClient = authorityNames.stream().anyMatch(x -> x.equals(ROLE_CLIENT));
+        if (isClient) {
+            return CLIENT_HOME_URL;
+        }
+        throw new IllegalStateException("Unknown roles for user " + authentication.getName());
     }
 
     @Override
